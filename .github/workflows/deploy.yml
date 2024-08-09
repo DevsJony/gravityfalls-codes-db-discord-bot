@@ -51,8 +51,6 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    if: false # Remove this line when you are ready to deploy your app
-
     needs: publish
     name: Deploy Image
     runs-on: ubuntu-latest
