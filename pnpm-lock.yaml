@@ -20,13 +20,13 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
-      prisma:
-        specifier: ^5.18.0
-        version: 5.18.0
     devDependencies:
       '@types/node':
         specifier: ^22.2.0
         version: 22.2.0
+      prisma:
+        specifier: ^5.18.0
+        version: 5.18.0
       tsx:
         specifier: ^4.17.0
         version: 4.17.0

@@ -9,18 +9,17 @@
     "build": "tsc",
     "prod": "cross-env NODE_ENV=production node dist/index.js",
     "dev": "tsx .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "prisma generate"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.2.0",
+    "prisma": "^5.18.0",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",
-    "prisma": "^5.18.0",
     "cross-env": "^7.0.3",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5"
