@@ -25,7 +25,7 @@ export default {
         }).then(result => result !== null);
 
         if (alreadyExistsCode) {
-            await interaction.editReply({content: ":x: This code already exists in the database. Someone else found it before you :stuck_out_tongue:"});
+            await interaction.editReply({content: `:x: Code ${parsedCode} already exists in the database. Someone else found it before you :stuck_out_tongue:`});
             return;
         }
 
@@ -61,6 +61,6 @@ export default {
             }
         })
 
-        await interaction.editReply({content: ":white_check_mark: Code valid! Added successfully to the database."});
+        await interaction.editReply({content: `:white_check_mark: Code \`${parsedCode}\` valid! Added successfully to the database.`});
     }
 } satisfies BotCommand;
