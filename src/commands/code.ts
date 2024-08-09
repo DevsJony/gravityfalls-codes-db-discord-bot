@@ -22,10 +22,13 @@ export default {
             where: {
                 code: parsedCode
             }
-        }).then(result => result !== null);
+        })
 
-        if (alreadyExistsCode) {
-            await interaction.editReply({content: `:x: Code \`${parsedCode}\` already exists in the database. Someone else found it before you :stuck_out_tongue:`});
+        if (alreadyExistsCode !== null) {
+            await interaction.editReply({
+                content: `:x: Code \`${parsedCode}\` already exists in the database. The <@${alreadyExistsCode.foundByDiscordId}> found it before you :stuck_out_tongue:`,
+                allowedMentions: { parse: [] }
+            });
             return;
         }
 
