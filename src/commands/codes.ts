@@ -19,13 +19,29 @@ const MAX_CODES_ON_PAGE = 20;
 export default {
     data: new SlashCommandBuilder()
         .setName("codes")
-        .setDescription("List of codes"),
+        .setDescription("List of codes")
+        .addStringOption(option =>
+            option.setName("content_type")
+                .setDescription("Filter by content type")
+                .setRequired(false)
+                .addChoices(
+                    {name: "video/mp4", value: "video/mp4"},
+                    {name: "text/html", value: "text/html"},
+                    {name: "image/jpeg", value: "image/jpeg"},
+                    {name: "audio/mpeg", value: "audio/mpeg"},
+                    {name: "image/png", value: "image/png"},
+                )),
     async execute(interaction) {
+        let contentType = interaction.options.getString("content_type", false) ?? undefined;
+
         await interaction.deferReply();
 
         let codesCount = await prisma.code.count();
         let codes = await prisma.code.findMany({
             take: MAX_CODES_ON_PAGE,
+            where: {
+                contentType: contentType
+            },
             orderBy: {
                 createdAt: "desc"
             },
@@ -81,6 +97,9 @@ export default {
             let nextCodes = await prisma.code.findMany({
                 take: MAX_CODES_ON_PAGE,
                 skip: page * MAX_CODES_ON_PAGE,
+                where: {
+                    contentType: contentType
+                },
                 orderBy: {
                     createdAt: "desc"
                 },
