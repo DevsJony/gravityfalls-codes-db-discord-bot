@@ -9,7 +9,8 @@
     "build": "tsc",
     "prod": "cross-env NODE_ENV=production node dist/index.js",
     "dev": "tsx .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "prisma generate"
   },
   "license": "ISC",
   "devDependencies": {
