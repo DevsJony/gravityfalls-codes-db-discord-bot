@@ -48,7 +48,7 @@ export default {
             .setCustomId("next")
             .setEmoji("➡️")
             .setStyle(ButtonStyle.Primary)
-            .setDisabled(codesCount === 1);
+            .setDisabled(Math.ceil(codesCount / MAX_CODES_ON_PAGE) === 1);
 
         let row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(previousButton, nextButton);
@@ -76,7 +76,7 @@ export default {
             }
 
             previousButton.setDisabled(page === 0);
-            nextButton.setDisabled(page === codesCount - 1);
+            nextButton.setDisabled(page === Math.ceil(codesCount / MAX_CODES_ON_PAGE) - 1);
 
             let nextCodes = await prisma.code.findMany({
                 take: MAX_CODES_ON_PAGE,
