@@ -4,7 +4,7 @@ import {Client, ClientEvents} from "discord.js";
 import {fileURLToPath} from "url";
 import {BotEvent} from "../types.js";
 
-export default function loadListeners(client: Client<true>) {
+export default function loadListeners(client: Client) {
     console.log("Loading listeners...")
 
     let listenersDir = join(path.dirname(fileURLToPath(import.meta.url)), "../listeners");

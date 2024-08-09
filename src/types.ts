@@ -3,7 +3,7 @@ import {ChatInputCommandInteraction, Client, ClientEvents, SlashCommandBuilder} 
 export interface BotEvent<K extends keyof ClientEvents> {
     name: K,
     once?: boolean | false,
-    execute: (client: Client<true>, ...args: ClientEvents[K]) => void
+    execute: (client: Client, ...args: ClientEvents[K]) => void
 }
 
 export interface BotCommand {
