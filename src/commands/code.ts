@@ -25,7 +25,7 @@ export default {
         }).then(result => result !== null);
 
         if (alreadyExistsCode) {
-            await interaction.editReply({content: `:x: Code ${parsedCode} already exists in the database. Someone else found it before you :stuck_out_tongue:`});
+            await interaction.editReply({content: `:x: Code \`${parsedCode}\` already exists in the database. Someone else found it before you :stuck_out_tongue:`});
             return;
         }
 
