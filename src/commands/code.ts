@@ -46,7 +46,7 @@ export default {
             return;
         }
 
-        let responseContent = await response.text();
+        let responseContent = await response.arrayBuffer();
 
         let contentType = response.headers.get("content-type")!;
 
@@ -57,7 +57,7 @@ export default {
                 foundByDiscordId: interaction.user.id,
 
                 contentType: contentType,
-                data: responseContent
+                data: Buffer.from(responseContent)
             }
         })
 
