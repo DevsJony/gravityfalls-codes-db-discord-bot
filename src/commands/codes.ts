@@ -36,7 +36,11 @@ export default {
 
         await interaction.deferReply();
 
-        let codesCount = await prisma.code.count();
+        let codesCount = await prisma.code.count({
+            where: {
+                contentType: contentType
+            },
+        });
         let codes = await prisma.code.findMany({
             take: MAX_CODES_ON_PAGE,
             where: {
