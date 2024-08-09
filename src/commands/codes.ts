@@ -53,7 +53,7 @@ export default {
         let row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(previousButton, nextButton);
 
-        let currentPage = getEmbedForCodes(codes, {
+        let currentPage = getEmbedForCodes(codes, codesCount, {
             currentPage: page + 1,
             maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
         });
@@ -92,7 +92,7 @@ export default {
                 }
             });
 
-            currentPage = getEmbedForCodes(nextCodes, {
+            currentPage = getEmbedForCodes(nextCodes, codesCount, {
                 currentPage: page + 1,
                 maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
             });
@@ -113,7 +113,7 @@ export default {
     }
 } satisfies BotCommand;
 
-function getEmbedForCodes(codes: LiteCode[], pageInfo: {
+function getEmbedForCodes(codes: LiteCode[], allCodesCount: number, pageInfo: {
     currentPage: number,
     maxPage: number,
 }): EmbedBuilder {
@@ -124,7 +124,7 @@ function getEmbedForCodes(codes: LiteCode[], pageInfo: {
     }
 
     return new EmbedBuilder()
-        .setTitle("Codes List")
+        .setTitle(`Codes List (${allCodesCount} count)`)
         .setDescription(content)
         .setFooter({
             text: `Page ${pageInfo.currentPage}/${pageInfo.maxPage}`
