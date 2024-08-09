@@ -54,7 +54,7 @@ export default {
             data: {
                 code: parsedCode,
                 enteredCode: enteredCode,
-                byDiscordId: interaction.user.id,
+                foundByDiscordId: interaction.user.id,
 
                 contentType: contentType,
                 data: responseContent

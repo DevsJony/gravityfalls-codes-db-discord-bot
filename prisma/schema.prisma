@@ -14,11 +14,11 @@ datasource db {
 }
 
 model Code {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  byDiscordId String
-  enteredCode String
-  code        String   @unique
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  foundByDiscordId String
+  enteredCode      String
+  code             String   @unique
 
   contentType String
   data        String
