@@ -73,7 +73,7 @@ export default {
         let row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(previousButton, nextButton);
 
-        let currentPage = getEmbedForCodes(codes, codesCount, {
+        let currentPage = getEmbedForCodes(codes, codesCount, contentType, {
             currentPage: page + 1,
             maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
         });
@@ -115,7 +115,7 @@ export default {
                 }
             });
 
-            currentPage = getEmbedForCodes(nextCodes, codesCount, {
+            currentPage = getEmbedForCodes(nextCodes, codesCount, contentType, {
                 currentPage: page + 1,
                 maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
             });
@@ -136,7 +136,7 @@ export default {
     }
 } satisfies BotCommand;
 
-function getEmbedForCodes(codes: LiteCode[], allCodesCount: number, pageInfo: {
+function getEmbedForCodes(codes: LiteCode[], allCodesCount: number, contentType: string | undefined, pageInfo: {
     currentPage: number,
     maxPage: number,
 }): EmbedBuilder {
@@ -146,8 +146,14 @@ function getEmbedForCodes(codes: LiteCode[], allCodesCount: number, pageInfo: {
         content += `\`${code.code}\` - <t:${Math.floor(code.createdAt.getTime() / 1000)}:R> - <@${code.foundByDiscordId}>\n`;
     }
 
+    let title = `Codes List (${allCodesCount} count)`;
+
+    if (contentType) {
+        title += ` (\`${contentType}\`)`;
+    }
+
     return new EmbedBuilder()
-        .setTitle(`Codes List (${allCodesCount} count)`)
+        .setTitle(title)
         .setDescription(content)
         .setFooter({
             text: `Page ${pageInfo.currentPage}/${pageInfo.maxPage}`
