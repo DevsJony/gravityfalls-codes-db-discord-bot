@@ -7,7 +7,7 @@ export default {
         .setDescription("Command changed to /addcode"),
     async execute(interaction) {
         await interaction.reply({
-            content: "This command has been changed to `/addcode`. Please use `/addcode` instead.",
+            content: "This command has been renamed to `/addcode`. Please use `/addcode` instead.",
             ephemeral: true,
         })
     }
