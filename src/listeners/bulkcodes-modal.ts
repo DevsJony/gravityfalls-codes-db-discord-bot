@@ -102,7 +102,7 @@ export default defineBotEvent({
 });
 
 function sanitizeCodes(codes: string[]): string[] {
-    let codesMap = new Map<string, string>(); // parsed code -> obj
+    let codesMap = new Map<string, string>(); // parsed code -> original code
 
     for (let code of codes) {
         let parsed = parseCode(code);
