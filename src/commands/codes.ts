@@ -41,23 +41,13 @@ export default {
                 contentType: contentType
             },
         });
-        let codes = await prisma.code.findMany({
-            take: MAX_CODES_ON_PAGE,
-            where: {
-                contentType: contentType
-            },
-            orderBy: {
-                createdAt: "desc"
-            },
-            select: {
-                code: true,
-                enteredCode: true,
-                foundByDiscordId: true,
-                createdAt: true,
-            }
-        });
 
-        let page = 0;
+        let pageInfo: PageInfo = {
+            pageIdx: 0,
+            maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
+            allCodesCount: codesCount,
+            contentType: contentType,
+        }
 
         let previousButton = new ButtonBuilder()
             .setCustomId("previous")
@@ -68,15 +58,12 @@ export default {
             .setCustomId("next")
             .setEmoji("➡️")
             .setStyle(ButtonStyle.Primary)
-            .setDisabled(Math.ceil(codesCount / MAX_CODES_ON_PAGE) === 1);
+            .setDisabled(pageInfo.maxPage === 1);
 
         let row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(previousButton, nextButton);
 
-        let currentPage = getEmbedForCodes(codes, codesCount, contentType, {
-            currentPage: page + 1,
-            maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
-        });
+        let currentPage = await getPage(pageInfo);
 
         const msg = await interaction.editReply({
             embeds: [currentPage],
@@ -90,35 +77,15 @@ export default {
 
         collector.on("collect", async i => {
             if (i.customId === "next") {
-                page++;
+                pageInfo.pageIdx++;
             } else if (i.customId === "previous") {
-                page--;
+                pageInfo.pageIdx--;
             }
 
-            previousButton.setDisabled(page === 0);
-            nextButton.setDisabled(page === Math.ceil(codesCount / MAX_CODES_ON_PAGE) - 1);
+            previousButton.setDisabled(pageInfo.pageIdx === 0);
+            nextButton.setDisabled(pageInfo.pageIdx === pageInfo.maxPage - 1);
 
-            let nextCodes = await prisma.code.findMany({
-                take: MAX_CODES_ON_PAGE,
-                skip: page * MAX_CODES_ON_PAGE,
-                where: {
-                    contentType: contentType
-                },
-                orderBy: {
-                    createdAt: "desc"
-                },
-                select: {
-                    code: true,
-                    enteredCode: true,
-                    foundByDiscordId: true,
-                    createdAt: true,
-                }
-            });
-
-            currentPage = getEmbedForCodes(nextCodes, codesCount, contentType, {
-                currentPage: page + 1,
-                maxPage: Math.ceil(codesCount / MAX_CODES_ON_PAGE),
-            });
+            currentPage = await getPage(pageInfo);
 
             i.update({
                 embeds: [currentPage],
@@ -136,26 +103,50 @@ export default {
     }
 } satisfies BotCommand;
 
-function getEmbedForCodes(codes: LiteCode[], allCodesCount: number, contentType: string | undefined, pageInfo: {
-    currentPage: number,
-    maxPage: number,
-}): EmbedBuilder {
+interface PageInfo {
+    pageIdx: number;
+    maxPage: number;
+    allCodesCount: number;
+    contentType?: string;
+}
 
+async function getPage(pageInfo: PageInfo): Promise<EmbedBuilder> {
+    let codes = await prisma.code.findMany({
+        take: MAX_CODES_ON_PAGE,
+        skip: pageInfo.pageIdx * MAX_CODES_ON_PAGE,
+        where: {
+            contentType: pageInfo.contentType
+        },
+        orderBy: {
+            createdAt: "desc"
+        },
+        select: {
+            code: true,
+            enteredCode: true,
+            foundByDiscordId: true,
+            createdAt: true,
+        }
+    });
+
+    return getEmbedForCodes(codes, pageInfo);
+}
+
+function getEmbedForCodes(codes: LiteCode[], pageInfo: PageInfo): EmbedBuilder {
     let content = "";
     for (let code of codes) {
         content += `\`${code.code}\` - <t:${Math.floor(code.createdAt.getTime() / 1000)}:R> - <@${code.foundByDiscordId}>\n`;
     }
 
-    let title = `Codes List (${allCodesCount} count)`;
+    let title = `Codes List (${pageInfo.allCodesCount} count)`;
 
-    if (contentType) {
-        title += ` (\`${contentType}\`)`;
+    if (pageInfo.contentType) {
+        title += ` (\`${pageInfo.contentType}\`)`;
     }
 
     return new EmbedBuilder()
         .setTitle(title)
         .setDescription(content)
         .setFooter({
-            text: `Page ${pageInfo.currentPage}/${pageInfo.maxPage}`
+            text: `Page ${pageInfo.pageIdx + 1}/${pageInfo.maxPage}`
         });
 }
