@@ -57,6 +57,11 @@ export default defineBotEvent({
                 if (response.status === "invalid") {
                     invalid++;
                 }
+                if (invalid >= 20) {
+                    content += "Too many invalid codes. You are on cooldown for 15 minutes";
+                    applyBulkCodesCooldown(interaction.user.id, 1000 * 60 * 15);
+                    break;
+                }
             }
         } finally {
             // Stop updating status

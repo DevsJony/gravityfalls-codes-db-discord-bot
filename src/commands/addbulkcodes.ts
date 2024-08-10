@@ -48,6 +48,6 @@ export default {
     }
 } satisfies BotCommand;
 
-export function applyBulkCodesCooldown(userId: string) {
-    cooldowns.set(userId, new Date(Date.now() + COOLDOWN_TIME));
+export function applyBulkCodesCooldown(userId: string, cooldownTime: number = COOLDOWN_TIME) {
+    cooldowns.set(userId, new Date(Date.now()));
 }
