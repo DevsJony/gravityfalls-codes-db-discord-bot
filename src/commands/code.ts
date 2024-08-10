@@ -28,10 +28,21 @@ export interface CodeResponse {
     message: string;
 }
 
-export async function processCode(enteredCode: string, foundByDiscordId: string): Promise<CodeResponse> {
-    let parsedCode = enteredCode
+export function parseCode(code: string): string {
+    return code
         .toLowerCase()
         .replace(/[^a-z0-9?]/gi, "");
+}
+
+export async function processCode(enteredCode: string, foundByDiscordId: string): Promise<CodeResponse> {
+    let parsedCode = parseCode(enteredCode);
+    if (parsedCode.length < 2) {
+        return {
+            message: ":x: Invalid code.",
+            status: "invalid",
+            success: false
+        };
+    }
 
     let alreadyExistsCode = await prisma.code.findUnique({
         where: {

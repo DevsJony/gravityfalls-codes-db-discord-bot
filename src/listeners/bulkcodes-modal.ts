@@ -1,6 +1,6 @@
 import {Client, EmbedBuilder, Events, InteractionReplyOptions, MessagePayload} from "discord.js";
 import {defineBotEvent} from "../bot-utils.js";
-import {processCode} from "../commands/code.js";
+import {parseCode, processCode} from "../commands/code.js";
 import {EMBED_COLOR} from "../consts.js";
 import {applyBulkCodesCooldown} from "../commands/addbulkcodes.js";
 
@@ -12,10 +12,7 @@ export default defineBotEvent({
         if (!interaction.isModalSubmit()) return;
         if (interaction.customId !== "addBulkCodes") return;
 
-        const codes: string[] = interaction.fields.getTextInputValue("codes").split("\n")
-            .filter(code => code.trim() !== "")
-            // Deduplicate array
-            .filter((code, index) => codes.indexOf(code) === index);
+        const codes: string[] = sanitizeCodes(interaction.fields.getTextInputValue("codes").split("\n"));
 
         // Apply cooldown
         applyBulkCodesCooldown(interaction.user.id);
@@ -102,7 +99,25 @@ export default defineBotEvent({
 
         await interaction.editReply({content: "", embeds: [embed]});
     }
-})
+});
+
+function sanitizeCodes(codes: string[]): string[] {
+    let codesMap = new Map<string, string>(); // parsed code -> obj
+
+    for (let code of codes) {
+        let parsed = parseCode(code);
+        if (parsed.length < 2) {
+            continue;
+        }
+        if (codesMap.has(parsed)) {
+            // Already exists
+            continue;
+        }
+        codesMap.set(parsed, code);
+    }
+
+    return Array.from(codesMap.values());
+}
 
 function getProcessingStatus(codesCount: number, added: number, alreadyExists: number, invalid: number): InteractionReplyOptions {
     return {
