@@ -17,7 +17,7 @@ export default {
 
         let response = await processCode(enteredCode, interaction.user.id);
 
-        await interaction.editReply(response.message);
+        await interaction.editReply({content: response.message, allowedMentions: { parse: [] }});
     }
 } satisfies BotCommand;
 
