@@ -10,7 +10,8 @@ export default defineBotEvent({
         if (!interaction.isModalSubmit()) return;
         if (interaction.customId !== "addBulkCodes") return;
 
-        const codes = interaction.fields.getTextInputValue("codes").split("\n");
+        const codes = interaction.fields.getTextInputValue("codes").split("\n")
+            .filter(code => code.trim() !== "");
 
         // Apply cooldown
         applyBulkCodesCooldown(interaction.user.id);
@@ -78,7 +79,7 @@ export default defineBotEvent({
                 inline: true
             });
 
-        await interaction.editReply({embeds: [embed]});
+        await interaction.editReply({content: "", embeds: [embed]});
     }
 })
 
