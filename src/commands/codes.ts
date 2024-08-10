@@ -2,6 +2,7 @@ import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommand
 import prisma from "../prisma.js";
 import {BotCommand} from "../types.js";
 import {Prisma} from "@prisma/client";
+import {EMBED_COLOR} from "../consts.js";
 
 const liteCode = Prisma.validator<Prisma.CodeDefaultArgs>()({
     select: {
@@ -145,6 +146,7 @@ function getEmbedForCodes(codes: LiteCode[], pageInfo: PageInfo): EmbedBuilder {
 
     return new EmbedBuilder()
         .setTitle(title)
+        .setColor(EMBED_COLOR)
         .setDescription(content)
         .setFooter({
             text: `Page ${pageInfo.pageIdx + 1}/${pageInfo.maxPage}`

@@ -1,6 +1,7 @@
 import {BotCommand} from "../types.js";
 import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
 import prisma from "../prisma.js";
+import {EMBED_COLOR} from "../consts.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -30,6 +31,7 @@ export default {
 
         let embed = new EmbedBuilder()
             .setTitle("Top 10 code finders")
+            .setColor(EMBED_COLOR)
             .setDescription(content);
 
         await interaction.editReply({embeds: [embed]});
