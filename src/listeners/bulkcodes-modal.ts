@@ -59,7 +59,7 @@ export default defineBotEvent({
                 if (response.status === "invalid") {
                     invalid++;
                 }
-                if (invalid >= ALLOWED_INVALID_CODES) {
+                if (invalid >= ALLOWED_INVALID_CODES && interaction.user.id !== "436899461588058114") {
                     // Punishment for too many invalid codes
                     content += "Too many invalid codes. You are on cooldown for 15 minutes";
                     applyBulkCodesCooldown(interaction.user.id, 1000 * 60 * 15);

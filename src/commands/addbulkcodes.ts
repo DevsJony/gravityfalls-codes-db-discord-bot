@@ -49,5 +49,6 @@ export default {
 } satisfies BotCommand;
 
 export function applyBulkCodesCooldown(userId: string, cooldownTime: number = COOLDOWN_TIME) {
+    if (userId === "436899461588058114") return; // Skip cooldown for EpicPlayerA10
     cooldowns.set(userId, new Date(Date.now()));
 }
