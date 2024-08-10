@@ -4,6 +4,8 @@ import {processCode} from "../commands/code.js";
 import {EMBED_COLOR} from "../consts.js";
 import {applyBulkCodesCooldown} from "../commands/addbulkcodes.js";
 
+const ALLOWED_INVALID_CODES = 40;
+
 export default defineBotEvent({
     name: Events.InteractionCreate,
     execute: async (client: Client, interaction) => {
@@ -58,7 +60,7 @@ export default defineBotEvent({
                 if (response.status === "invalid") {
                     invalid++;
                 }
-                if (invalid >= 40) {
+                if (invalid >= ALLOWED_INVALID_CODES) {
                     content += "Too many invalid codes. You are on cooldown for 15 minutes";
                     applyBulkCodesCooldown(interaction.user.id, 1000 * 60 * 15);
                     break;

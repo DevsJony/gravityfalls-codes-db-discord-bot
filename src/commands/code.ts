@@ -79,7 +79,9 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
             contentType: contentType,
             data: Buffer.from(responseContent)
         }
-    })
+    });
+
+    console.log(`Code ${parsedCode} added to the database`);
 
     return {
         message: `:white_check_mark: Code \`${parsedCode}\` valid! Added successfully to the database.`,
