@@ -38,7 +38,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
     let parsedCode = parseCode(enteredCode);
     if (parsedCode.length < 2) {
         return {
-            message: ":x: The code is invalid on the `thisisnotawebsitedotcom.com`. Please check it first on the website before entering it here.",
+            message: ":x: The code is invalid on the thisisnotawebsitedotcom.com. Please check it first on the website before entering it here.",
             status: "invalid",
             success: false
         };
@@ -71,7 +71,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
             };
         }
         return {
-            message: ":x: The code is invalid on the `thisisnotawebsitedotcom.com`. Please check it first on the website before entering it here.",
+            message: ":x: The code is invalid on the thisisnotawebsitedotcom.com. Please check it first on the website before entering it here.",
             status: "invalid",
             success: false
         };
