@@ -12,8 +12,10 @@ export default defineBotEvent({
         if (!interaction.isModalSubmit()) return;
         if (interaction.customId !== "addBulkCodes") return;
 
-        const codes = interaction.fields.getTextInputValue("codes").split("\n")
-            .filter(code => code.trim() !== "");
+        const codes: string[] = interaction.fields.getTextInputValue("codes").split("\n")
+            .filter(code => code.trim() !== "")
+            // Deduplicate array
+            .filter((code, index) => codes.indexOf(code) === index);
 
         // Apply cooldown
         applyBulkCodesCooldown(interaction.user.id);
@@ -61,6 +63,7 @@ export default defineBotEvent({
                     invalid++;
                 }
                 if (invalid >= ALLOWED_INVALID_CODES) {
+                    // Punishment for too many invalid codes
                     content += "Too many invalid codes. You are on cooldown for 15 minutes";
                     applyBulkCodesCooldown(interaction.user.id, 1000 * 60 * 15);
                     break;
