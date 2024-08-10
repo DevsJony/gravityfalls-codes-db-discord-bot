@@ -88,7 +88,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
     }
 }
 
-const RETRY_COUNT = 1;
+const RETRY_COUNT = 3;
 
 /**
  * Fetches the code with retries.
