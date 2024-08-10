@@ -23,6 +23,8 @@ export default {
 
 export interface CodeResponse {
     success: boolean;
+    critical?: boolean;
+    status: "added" | "alreadyExists" | "invalid" | "rateLimited";
     message: string;
 }
 
@@ -40,6 +42,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
     if (alreadyExistsCode !== null) {
         return {
             message: `:x: Code \`${parsedCode}\` already exists in the database. The <@${alreadyExistsCode.foundByDiscordId}> found it before you :stuck_out_tongue:`,
+            status: "alreadyExists",
             success: false
         };
     }
@@ -57,11 +60,14 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
             console.log("RATE LIMITED");
             return {
                 message: "The server has rate-limited us. Try again in few seconds.",
+                critical: true,
+                status: "rateLimited",
                 success: false
             };
         }
         return {
             message: ":x: Invalid code.",
+            status: "invalid",
             success: false
         };
     }
@@ -83,6 +89,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
 
     return {
         message: `:white_check_mark: Code \`${parsedCode}\` valid! Added successfully to the database.`,
+        status: "added",
         success: true
     }
 }
