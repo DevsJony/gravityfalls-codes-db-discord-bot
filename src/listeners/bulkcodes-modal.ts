@@ -2,6 +2,7 @@ import {Client, EmbedBuilder, Events} from "discord.js";
 import {defineBotEvent} from "../bot-utils.js";
 import {processCode} from "../commands/code.js";
 import {EMBED_COLOR} from "../consts.js";
+import {applyBulkCodesCooldown} from "../commands/addbulkcodes.js";
 
 export default defineBotEvent({
     name: Events.InteractionCreate,
@@ -10,6 +11,9 @@ export default defineBotEvent({
         if (interaction.customId !== "addBulkCodes") return;
 
         const codes = interaction.fields.getTextInputValue("codes").split("\n");
+
+        // Apply cooldown
+        applyBulkCodesCooldown(interaction.user.id);
 
         await interaction.deferReply();
 
