@@ -14,7 +14,7 @@ let cooldowns = new Map<string, Date>(); // Map<userId, Date>
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("addbulkcodes")
+        .setName("addcodesbulk")
         .setDescription("Add codes in bulk to the database"),
     async execute(interaction) {
         let userCooldown = cooldowns.get(interaction.user.id);

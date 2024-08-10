@@ -2,7 +2,7 @@ import {Client, EmbedBuilder, Events, InteractionReplyOptions, MessagePayload} f
 import {defineBotEvent} from "../bot-utils.js";
 import {parseCode, processCode} from "../commands/addcode.js";
 import {EMBED_COLOR} from "../consts.js";
-import {applyBulkCodesCooldown} from "../commands/addbulkcodes.js";
+import {applyBulkCodesCooldown} from "../commands/addcodesbulk.js";
 
 const ALLOWED_INVALID_CODES = 40;
 
