@@ -52,7 +52,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
 
     if (alreadyExistsCode !== null) {
         return {
-            message: `:x: Code \`${parsedCode}\` already exists in the database. The <@${alreadyExistsCode.foundByDiscordId}> found it before you :stuck_out_tongue:`,
+            message: `:x: Code \`${parsedCode}\` already exists in the database. The <@${alreadyExistsCode.foundByDiscordId}> found it before you <t:${Math.floor(alreadyExistsCode.createdAt.getTime() / 1000)}:R> :stuck_out_tongue:`,
             status: "alreadyExists",
             success: false
         };
