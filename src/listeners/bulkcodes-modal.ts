@@ -18,6 +18,7 @@ export default defineBotEvent({
 
         //await interaction.deferReply();
 
+
         let added = 0;
         let alreadyExists = 0;
         let invalid = 0;
@@ -57,7 +58,7 @@ export default defineBotEvent({
                 if (response.status === "invalid") {
                     invalid++;
                 }
-                if (invalid >= 20) {
+                if (invalid >= 40) {
                     content += "Too many invalid codes. You are on cooldown for 15 minutes";
                     applyBulkCodesCooldown(interaction.user.id, 1000 * 60 * 15);
                     break;
