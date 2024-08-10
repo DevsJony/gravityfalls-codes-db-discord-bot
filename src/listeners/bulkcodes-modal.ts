@@ -19,11 +19,11 @@ export default defineBotEvent({
 
         //await interaction.deferReply();
 
-
+        let processedCount = 0;
         let added = 0;
         let alreadyExists = 0;
         let invalid = 0;
-        await interaction.reply(getProcessingStatus(codes.length, added, alreadyExists, invalid));
+        await interaction.reply(getProcessingStatus(codes.length, processedCount, added, alreadyExists, invalid));
 
         let processing = true;
 
@@ -34,7 +34,7 @@ export default defineBotEvent({
                 return;
             }
 
-            await interaction.editReply(getProcessingStatus(codes.length, added, alreadyExists, invalid));
+            await interaction.editReply(getProcessingStatus(codes.length, processedCount, added, alreadyExists, invalid));
         }, 1000);
 
         let content = "";
@@ -65,6 +65,8 @@ export default defineBotEvent({
                     applyBulkCodesCooldown(interaction.user.id, 1000 * 60 * 15);
                     break;
                 }
+
+                processedCount++;
             }
         } finally {
             // Stop updating status
@@ -119,9 +121,9 @@ function sanitizeCodes(codes: string[]): string[] {
     return Array.from(codesMap.values());
 }
 
-function getProcessingStatus(codesCount: number, added: number, alreadyExists: number, invalid: number): InteractionReplyOptions {
+function getProcessingStatus(codesCount: number, processedCount: number, added: number, alreadyExists: number, invalid: number): InteractionReplyOptions {
     return {
-        content: `Processing codes... 0/${codesCount}
+        content: `Processing codes... ${processedCount}/${codesCount}
 Added: ${added} | Already exists: ${alreadyExists} | Invalid: ${invalid}`,
     }
 }
