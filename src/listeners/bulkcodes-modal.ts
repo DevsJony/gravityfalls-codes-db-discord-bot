@@ -36,10 +36,16 @@ export default defineBotEvent({
         }, 1000);
 
         let content = "";
+        let rateLimited = false;
+
         try {
             for (let code of codes) {
                 let response = await processCode(code, interaction.user.id);
-                if (response.success || response.critical) {
+                if (response.status === "rateLimited") {
+                    rateLimited = true;
+                    continue;
+                }
+                if (response.success) {
                     content += response.message + "\n";
                 }
                 if (response.status === "added") {
@@ -55,6 +61,10 @@ export default defineBotEvent({
         } finally {
             // Stop updating status
             processing = false;
+        }
+
+        if (rateLimited) {
+            content += "The server has rate-limited us. Try again in few seconds.";
         }
 
         if (content === "") {
