@@ -63,7 +63,20 @@ export default defineBotEvent({
         let embed = new EmbedBuilder()
             .setTitle("Bulk Codes Summary")
             .setColor(EMBED_COLOR)
-            .setDescription(content);
+            .setDescription(content)
+            .addFields({
+                name: "Added",
+                value: added.toString(),
+                inline: true
+            }, {
+                name: "Already exists",
+                value: alreadyExists.toString(),
+                inline: true
+            }, {
+                name: "Invalid",
+                value: invalid.toString(),
+                inline: true
+            });
 
         await interaction.editReply({embeds: [embed]});
     }
