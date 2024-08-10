@@ -47,13 +47,7 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
         };
     }
 
-    let formData = new FormData();
-    formData.append("code", parsedCode);
-
-    let response = await fetch("https://codes.thisisnotawebsitedotcom.com/", {
-        method: "POST",
-        body: formData
-    });
+    let response = await fetchCode(parsedCode);
 
     if (!response.ok) {
         if (response.status === 429) {
@@ -92,4 +86,31 @@ export async function processCode(enteredCode: string, foundByDiscordId: string)
         status: "added",
         success: true
     }
+}
+
+const RETRY_COUNT = 1;
+
+/**
+ * Fetches the code with retries.
+ */
+async function fetchCode(code: string): Promise<Response> {
+    let response;
+    for (let i = 0; i < RETRY_COUNT; i++) {
+        let formData = new FormData();
+        formData.append("code", code);
+
+        response = await fetch("https://codes.thisisnotawebsitedotcom.com/", {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.status === 429) {
+            await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 3 seconds
+            continue;
+        }
+
+        return response;
+    }
+
+    return response!;
 }
