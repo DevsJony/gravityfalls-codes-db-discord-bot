@@ -1,6 +1,6 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder} from "discord.js";
 import prisma from "../prisma.js";
-import {BotCommand} from "../types.js";
+import {BotCommand} from "../bot-utils.js";
 import {Prisma} from "@prisma/client";
 import {EMBED_COLOR} from "../consts.js";
 

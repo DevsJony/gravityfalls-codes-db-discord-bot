@@ -1,7 +1,7 @@
-import {ActivitiesOptions, Client, Events, ActivityType} from "discord.js";
-import {BotEvent} from "../types.js";
+import {Client, Events} from "discord.js";
+import {defineBotEvent} from "../bot-utils.js";
 
-export default {
+export default defineBotEvent({
     name: Events.ClientReady,
     once: true,
     execute: (client: Client) => {
@@ -9,4 +9,4 @@ export default {
 
         client.user!.setStatus("dnd");
     }
-} satisfies BotEvent<Events.ClientReady>;
+});

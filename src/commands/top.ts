@@ -1,4 +1,4 @@
-import {BotCommand} from "../types.js";
+import {BotCommand} from "../bot-utils.js";
 import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
 import prisma from "../prisma.js";
 import {EMBED_COLOR} from "../consts.js";
