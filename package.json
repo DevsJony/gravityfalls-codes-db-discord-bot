@@ -19,7 +19,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@prisma/client": "^5.18.0",
+    "@prisma/client": "^7.10.0",
     "cross-env": "^7.0.3",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5"
